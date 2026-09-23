@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>School Studnet Portal</h1>
+    <nav align="right"><a href="{% url 'add' %}">Add New Student</a></nav>
+    <table border=" 5">
+        <tr>
+            <td colspan="5">Student Details</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Age</td>
+            <td>Class</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <form method="get">
+                    <input type="text" name="search" placeholder="Search student by name">
+
+                    <button type="submit">Search</button>
+                </form>
+            </td>
+        </tr>
+        {% for data in data %}
+        <tr>
+            <td>{{data.name}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.cl}}</td>
+            <td><a href="{% url 'edit' data.id %}">Edit</a></td>
+            <td><a href="{% url 'delete' data.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
