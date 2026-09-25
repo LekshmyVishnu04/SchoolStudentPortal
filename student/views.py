@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Student
 from .forms import StudentModelForm
+from django.shortcuts import get_object_or_404
+from django.template.loader import get_template
+from io import BytesIO
+from xhtml2pdf import pisa
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -43,3 +48,22 @@ def delete(request, id):
         data.delete()
         return redirect('home')
     return render(request, 'delete.html', {'data': data})
+
+
+def download(request, id):
+    data = get_object_or_404(Student, pk=id)
+    template = get_template('student_pdf.html')
+    html = template.render({'student': data})
+
+    buffer = BytesIO()
+
+    pisa_status = pisa.CreatePDF(html, dest=buffer)
+
+    if pisa_status.err:
+        return HttpResponse('PDF creation error!')
+    else:
+        response = HttpResponse(
+            buffer.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="{}.pdf"'.format(
+            data.name)
+        return response
