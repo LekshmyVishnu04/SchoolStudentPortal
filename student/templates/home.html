@@ -12,7 +12,7 @@
     <nav align="right"><a href="{% url 'add' %}">Add New Student</a></nav>
     <table border=" 5">
         <tr>
-            <td colspan="6">Student Details</td>
+            <td colspan="7">Student Details</td>
         </tr>
         <tr>
             <td>Name</td>
@@ -21,9 +21,10 @@
             <td>Edit</td>
             <td>Delete</td>
             <td>Download</td>
+            <td>Send Email</td>
         </tr>
         <tr>
-            <td colspan="6">
+            <td colspan="7">
                 <form method="get">
                     <input type="text" name="search" placeholder="Search student by name">
 
@@ -39,6 +40,7 @@
             <td><a href="{% url 'edit' data.id %}">Edit</a></td>
             <td><a href="{% url 'delete' data.id %}">Delete</a></td>
             <td><a href="{%url 'download' data.id %}">Get PDF</td>
+            <td><a href="{%url 'sendemail' data.id %}">Send</td>
         </tr>
         {% endfor %}
     </table>

@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from .models import Student
 from .forms import StudentModelForm
 from django.shortcuts import get_object_or_404
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from io import BytesIO
 from xhtml2pdf import pisa
 from django.http import HttpResponse
+from django.utils.html import strip_tags
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -67,3 +69,16 @@ def download(request, id):
         response['Content-Disposition'] = 'attachment; filename="{}.pdf"'.format(
             student.name)
         return response
+
+
+def sendemail(request, id):
+    student = Student.objects.get(pk=id)
+
+    subject = f"New Student Added {student.name}"
+    from_email = "user123@gmail.com"
+    recipient_list = ["your_mailtrap_inbox@mailtrap.io"]
+    html_message = render_to_string('studnet_email.html', {'student': student})
+    plain_message = strip_tags(html_message)
+    send_mail(subject, plain_message, from_email,
+              recipient_list, html_message=html_message)
+    return HttpResponse('Email sent successfully')
