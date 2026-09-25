@@ -51,9 +51,9 @@ def delete(request, id):
 
 
 def download(request, id):
-    data = get_object_or_404(Student, pk=id)
+    student = get_object_or_404(Student, pk=id)
     template = get_template('student_pdf.html')
-    html = template.render({'student': data})
+    html = template.render({'student': student})
 
     buffer = BytesIO()
 
@@ -65,5 +65,5 @@ def download(request, id):
         response = HttpResponse(
             buffer.getvalue(), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="{}.pdf"'.format(
-            data.name)
+            student.name)
         return response
